@@ -17,14 +17,13 @@ export async function login(formData: FormData) {
 
     if (error) {
         console.error("Login error:", error)
-        redirect('/error')
+        return { error: error.message }
     }
 
     console.log("Login success for:", email)
     console.log("Session set:", !!data.session)
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+    return { success: true }
 }
 
 export async function signup(formData: FormData) {
@@ -39,9 +38,9 @@ export async function signup(formData: FormData) {
     })
 
     if (error) {
-        redirect('/error')
+        console.error("Signup error:", error)
+        return { error: error.message }
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+    return { success: true }
 }
