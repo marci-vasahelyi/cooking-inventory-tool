@@ -2,14 +2,13 @@ export interface InventoryItem {
     id: string;
     name: string;
     quantity: string;
-    category?: string;
 }
 
 // Mock persistence in memory (resets on server restart)
 let inventory: InventoryItem[] = [
-    { id: "1", name: "Eggs", quantity: "6 pcs", category: "Dairy" },
-    { id: "2", name: "Milk", quantity: "1 L", category: "Dairy" },
-    { id: "3", name: "Flour", quantity: "500g", category: "Pantry" },
+    { id: "1", name: "Eggs", quantity: "6 pcs" },
+    { id: "2", name: "Milk", quantity: "1 L" },
+    { id: "3", name: "Flour", quantity: "500g" },
 ];
 
 export async function getInventory(): Promise<InventoryItem[]> {

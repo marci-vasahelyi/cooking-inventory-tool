@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
-import { getInventory } from "@/lib/inventory-store";
+import prisma from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 import { getRecipeSuggestions } from "@/lib/ai-service";
 
 export async function POST() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     try {
-        const inventory = await getInventory();
-        const itemNames = inventory.map((item) => item.name);
+        const inventory = await prisma.inventoryItem.findMany({
+            where: { clientId: user.id },
+            select: { name: true }
+        });
+        const itemNames = inventory.map((item: { name: string }) => item.name);
 
         if (itemNames.length === 0) {
             return NextResponse.json({ suggestions: [] });

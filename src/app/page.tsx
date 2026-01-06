@@ -13,13 +13,28 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Trash2, Plus, Loader2 } from "lucide-react";
-import { InventoryItem } from "@/lib/inventory-store";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+
+interface InventoryItem {
+  id: string;
+  name: string;
+  quantity: string;
+}
 
 export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [newItem, setNewItem] = useState({ name: "", quantity: "" });
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login"); // or refresh
+    router.refresh();
+  };
 
   useEffect(() => {
     fetchItems();
@@ -74,9 +89,14 @@ export default function InventoryPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Kitchen Inventory</h1>
-          <p className="text-muted-foreground">Manage everything you have in your kitchen.</p>
+        <div className="flex justify-between items-center w-full">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Kitchen Inventory</h1>
+            <p className="text-muted-foreground">Manage everything you have in your kitchen.</p>
+          </div>
+          <Button variant="outline" onClick={handleSignOut}>
+            Sign Out
+          </Button>
         </div>
       </div>
 
