@@ -26,10 +26,12 @@ export default function LoginPage() {
             if (result.error) {
                 toast.error(result.error)
             } else {
-                toast.success(action === 'login' ? 'Logged in successfully!' : 'Check your email to confirm sign up!')
-                if (action === 'login') {
+                if (action === 'login' || result.apiAutoLogin) {
+                    toast.success('Welcome! Redirecting...')
                     router.push('/')
                     router.refresh()
+                } else {
+                    toast.success('Check your email to confirm sign up!')
                 }
             }
         } catch (e: any) {

@@ -17,13 +17,13 @@ export async function login(formData: FormData) {
 
     if (error) {
         console.error("Login error:", error)
-        return { error: error.message }
+        return { error: error.message, apiAutoLogin: false }
     }
 
     console.log("Login success for:", email)
     console.log("Session set:", !!data.session)
 
-    return { success: true }
+    return { success: true, apiAutoLogin: true }
 }
 
 export async function signup(formData: FormData) {
@@ -32,15 +32,15 @@ export async function signup(formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
         email,
         password,
     })
 
     if (error) {
         console.error("Signup error:", error)
-        return { error: error.message }
+        return { error: error.message, apiAutoLogin: false }
     }
 
-    return { success: true }
+    return { success: true, apiAutoLogin: !!data.session }
 }
