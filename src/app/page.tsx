@@ -139,6 +139,26 @@ export default function InventoryPage() {
           </CardContent>
         </Card>
 
+
+        {/* AI Call to Action */}
+        <Card className="md:col-span-2 shadow-md border-orange-100 bg-gradient-to-br from-orange-50 to-white">
+          <CardContent className="flex flex-col sm:flex-row items-center justify-between p-6 gap-4">
+            <div className="space-y-1">
+              <h3 className="font-semibold text-lg text-orange-900">Need inspiration?</h3>
+              <p className="text-sm text-orange-700/80">
+                Let our AI suggest recipes based on your current inventory.
+              </p>
+            </div>
+            <Button
+              onClick={() => router.push('/suggest')}
+              className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white shadow-sm"
+            >
+              Get AI Suggestions
+              <span className="ml-2 text-lg">✨</span>
+            </Button>
+          </CardContent>
+        </Card>
+
         {/* Inventory Table */}
         <Card className="md:col-span-2 shadow-md border-slate-100">
           <CardContent className="p-0">
