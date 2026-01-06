@@ -19,7 +19,7 @@ export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
-  const [newItem, setNewItem] = useState({ name: "", quantity: "", category: "" });
+  const [newItem, setNewItem] = useState({ name: "", quantity: "" });
 
   useEffect(() => {
     fetchItems();
@@ -50,7 +50,7 @@ export default function InventoryPage() {
         body: JSON.stringify(newItem),
       });
       if (res.ok) {
-        setNewItem({ name: "", quantity: "", category: "" });
+        setNewItem({ name: "", quantity: "" });
         fetchItems();
       }
     } catch (e) {
@@ -107,14 +107,6 @@ export default function InventoryPage() {
                   className="focus-visible:ring-orange-500"
                 />
               </div>
-              <div className="space-y-2">
-                <Input
-                  placeholder="Category (e.g. Dairy)"
-                  value={newItem.category}
-                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                  className="focus-visible:ring-orange-500"
-                />
-              </div>
               <Button
                 type="submit"
                 className="w-full bg-orange-600 hover:bg-orange-700 text-white"
@@ -135,7 +127,6 @@ export default function InventoryPage() {
                 <TableRow>
                   <TableHead>Item</TableHead>
                   <TableHead>Quantity</TableHead>
-                  <TableHead>Category</TableHead>
                   <TableHead className="w-[80px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -160,11 +151,6 @@ export default function InventoryPage() {
                     <TableRow key={item.id} className="hover:bg-slate-50 transition-colors">
                       <TableCell className="font-medium">{item.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-slate-100 text-slate-800">
-                          {item.category || "General"}
-                        </span>
-                      </TableCell>
                       <TableCell>
                         <Button
                           variant="ghost"
