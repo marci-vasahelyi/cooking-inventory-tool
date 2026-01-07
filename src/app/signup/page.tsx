@@ -4,34 +4,28 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { login } from './actions'
+import { signup } from '../login/actions'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Loader2 } from 'lucide-react'
 
-export default function LoginPage() {
+export default function SignupPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
 
-    async function handleLogin(formData: FormData) {
+    async function handleSignup(formData: FormData) {
         setLoading(true)
-        console.log(`[Client] Attempting login...`)
-
         try {
-            const result = await login(formData)
-            console.log(`[Client] login result:`, result)
-
+            const result = await signup(formData)
             if (result.error) {
                 toast.error(result.error)
             } else {
-                toast.success('Welcome! Redirecting...')
-                router.push('/')
-                router.refresh()
+                toast.success('Account created! Check your email to confirm.')
+                router.push('/login')
             }
         } catch (e: any) {
-            console.error(`[Client] login unexpected error:`, e)
             toast.error("An unexpected error occurred: " + e?.message)
         } finally {
             setLoading(false)
@@ -43,13 +37,13 @@ export default function LoginPage() {
             <div className="w-full max-w-sm">
                 <Card className="shadow-xl border-t-4 border-t-indigo-500">
                     <CardHeader className="text-center">
-                        <CardTitle className="text-3xl font-bold text-slate-800">Welcome Back</CardTitle>
+                        <CardTitle className="text-3xl font-bold text-slate-800">Sign Up</CardTitle>
                         <CardDescription className="text-slate-600">
-                            Enter your email below to login to your account
+                            Create a new account to get started
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form action={handleLogin} className="flex flex-col gap-6">
+                        <form action={handleSignup} className="flex flex-col gap-6">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
@@ -62,10 +56,7 @@ export default function LoginPage() {
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="password">Password</Label>
-                                    {/* Optional: Add Forgot Password link later */}
-                                </div>
+                                <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
                                     name="password"
@@ -80,15 +71,15 @@ export default function LoginPage() {
                                 disabled={loading}
                             >
                                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                Login
+                                Create Account
                             </Button>
                         </form>
                     </CardContent>
                     <CardFooter className="flex justify-center border-t p-6">
                         <div className="text-sm text-slate-500">
-                            Don't have an account?{' '}
-                            <Link href="/signup" className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline">
-                                Sign up here
+                            Already have an account?{' '}
+                            <Link href="/login" className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline">
+                                Login here
                             </Link>
                         </div>
                     </CardFooter>
